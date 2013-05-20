@@ -36,7 +36,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 				//if /keepchat doesn't exist, make it.
 				if (myDir.mkdirs())
 					XposedBridge.log("Directory " + myDir.toString() + " was created.");
-				String fname = "Image-"+ System.currentTimeMillis() + ".jpg";
+				String fname = "Image-"+ (System.currentTimeMillis() % 10000) + ".jpg";
 				XposedBridge.log("Saving with filename " + fname);
 				//construct a File object
 				File file = new File (myDir, fname);
