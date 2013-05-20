@@ -23,7 +23,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 		if (!lpparam.packageName.equals("com.snapchat.android"))
 			return;
 		else
-			XposedBridge.log("we are in Snapchat!");
+			XposedBridge.log("We are in Snapchat!");
 
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "getImageBitmap", Context.class, new XC_MethodHook() {
 			@Override
@@ -134,8 +134,8 @@ public class Keepchat implements IXposedHookLoadPackage {
 				}
 			}
 		});
+		/*
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "tick", new XC_MethodReplacement() {
-
 			@Override
 			protected Object replaceHookedMethod(MethodHookParam param)
 					throws Throwable {
@@ -143,6 +143,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 				return null;
 			}
 		});
+		*/
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "wasScreenshotted", new XC_MethodReplacement() {
 
 			@Override
