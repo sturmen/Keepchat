@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sturmen.xposed.keepchat"
     android:versionCode="1"
@@ -12,9 +13,25 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="xposedmodule" android:value="true"/>
-        <meta-data android:name="xposedminversion" android:value="2.1.4"/>
-        <meta-data android:name="xposeddescription" android:value="Save your Snaps from Snapchat."/>
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="2.1.4" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Save your Snaps from Snapchat." />
+
+        <activity
+            android:name="com.sturmen.xposed.keepchat.MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
