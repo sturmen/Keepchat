@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="toast_pref"
+        android:summaryOff="@string/toast_off"
+        android:summaryOn="@string/toast_on"
+        android:title="@string/toast_title" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="videos_pref"
+        android:summaryOff="@string/videos_off"
+        android:summaryOn="@string/videos_on"
+        android:title="@string/videos_title" />
+
+</PreferenceScreen>
