@@ -6,9 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.AttributeSet;
 import android.widget.Toast;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -115,18 +117,6 @@ public class Keepchat implements IXposedHookLoadPackage {
 					//construct a log message
 					CharSequence text = "Saved to " + myDir.toString() + "/" +  fname + " !";
 					XposedBridge.log(text.toString());
-					/*
-					// TODO fix this so it doesn't cause an exception
-					//get the original context to use for the toast
-					Context context = param.thisObject.getContext();
-					XposedBridge.log("Loaded context from args[1]");
-					//construct a toast notification telling the user it was successful
-					Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
-					XposedBridge.log("Successfully constructed Toast notification.");
-					//display the toast for the user
-					toast.show();
-					XposedBridge.log("Toast displayed successfully.");
-					*/
 				} catch (Exception e) {
 					//if any exceptions are found, write to log
 					XposedBridge.log("Error occured while saving the file.");
@@ -134,16 +124,19 @@ public class Keepchat implements IXposedHookLoadPackage {
 				}
 			}
 		});
-		/*
-		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "tick", new XC_MethodReplacement() {
-			@Override
-			protected Object replaceHookedMethod(MethodHookParam param)
-					throws Throwable {
-				XposedBridge.log("tick() called");
-				return null;
+		//display a toast so the user knows that the video was saved.
+		findAndHookMethod("com.snapchat.android.FeedActivity", lpparam.classLoader, "showVideo", new XC_MethodHook() {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Context context = ((Activity) param.thisObject).getApplicationContext();
+				XposedBridge.log("Loaded context from application");
+				//construct a toast notification telling the user it was successful
+				CharSequence text = "Saved video snap to SD card.";
+				Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+				XposedBridge.log("Successfully constructed Toast notification.");
+				//display the toast for the user
+				toast.show();
 			}
 		});
-		*/
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "wasScreenshotted", new XC_MethodReplacement() {
 
 			@Override
