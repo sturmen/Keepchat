@@ -26,6 +26,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 		else
 			XposedBridge.log("We are in Snapchat!");
 
+		//saves the bitmap snapchat caches to another location on the SD card
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "getImageBitmap", Context.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -74,6 +75,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 				//TODO offer to return nag image so user has to go to sdcard to see snap and buy my app
 			}
 		});
+		//method to save the videos from the URI it grabs
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "getVideoUri", new XC_MethodHook() {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				String videoUri = (String) param.getResult();
@@ -136,6 +138,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 				toast.show();
 			}
 		});
+		//never report screenshotted-ness (I don't know why you would want this but I put it in anyway.)
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "wasScreenshotted", new XC_MethodReplacement() {
 
 			@Override
