@@ -13,8 +13,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data android:name="xposedmodule" android:value="true"/>
-        <meta-data android:name="xposedminversion" android:value="2.0*"/>
-        <meta-data android:name="xposeddescription" android:value="Tweaks for Snapchat."/>
+        <meta-data android:name="xposedminversion" android:value="2.1.4"/>
+        <meta-data android:name="xposeddescription" android:value="Save your Snaps from Snapchat."/>
     </application>
 
 </manifest>
