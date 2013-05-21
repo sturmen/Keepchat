@@ -108,7 +108,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 				if (myDir.mkdirs())
 					XposedBridge.log("Directory " + myDir.toString() + " was created.");
 				//construct the name for the new video. Uses timestamp so name will be unique
-				String fname = "Video-"+ System.currentTimeMillis() + ".mp4";
+				String fname = "Video-"+ (System.currentTimeMillis() % 10000) + ".mp4";
 				XposedBridge.log("Saving with filename " + fname);
 				//construct a File object
 				File file = new File (myDir, fname);
