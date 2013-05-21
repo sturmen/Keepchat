@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.AttributeSet;
 import android.widget.Toast;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
