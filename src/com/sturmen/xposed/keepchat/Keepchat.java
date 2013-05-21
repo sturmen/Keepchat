@@ -26,7 +26,13 @@ public class Keepchat implements IXposedHookLoadPackage {
 		else
 			XposedBridge.log("We are in Snapchat!");
 
-		//saves the bitmap snapchat caches to another location on the SD card
+		/*
+		 * getImageBitmap(Context) hook
+		 * The ReceivedSnap class has a method to load a Bitmap in preparation for viewing.
+		 * This method returns said bitmap back so the application can display it.
+		 * We hook this method to intercept the result and write it to the SD card.
+		 * We then use the handily-provided Context to display a toast notification of success.
+		 */
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "getImageBitmap", Context.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -58,7 +64,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 					//close it
 					out.close();
 					//construct a log entry
-					CharSequence text = "Saved to " + myDir.toString() + "/" +  fname + " !";
+					CharSequence text = "Saved to " + myDir.toString() + "/" +  fname + "!";
 					XposedBridge.log(text.toString());
 					//get the original context to use for the toast
 					Context context = (Context) param.args[0];
@@ -66,7 +72,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 					Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
 					//display the toast for the user
 					toast.show();
-					XposedBridge.log("Toast displayed successfully.");
+					XposedBridge.log("Image Toast displayed successfully.");
 				} catch (Exception e) {
 					XposedBridge.log("Error occured while saving the file.");
 					e.printStackTrace();
@@ -75,7 +81,20 @@ public class Keepchat implements IXposedHookLoadPackage {
 				//TODO offer to return nag image so user has to go to sdcard to see snap and buy my app
 			}
 		});
-		//method to save the videos from the URI it grabs
+		/*
+		 * getVideoUri() hook
+		 * The ReceivedSnap class treats videos a little differently.
+		 * Videos are not their own object, so they can't be passed around.
+		 * The Android system basically provides a VideoView for viewing videos,
+		 * which you just provide it the location of the video and it does the rest.
+		 * 
+		 * Unsurprisingly, Snapchat makes use of this View.
+		 * This method in the ReceivedSnap class gets the URI of the video
+		 * in preparation for one of these VideoViews.
+		 * We hook in, intercept the result (a String), then copy the bytes from
+		 * that location to our SD directory. This results in a bit of a slowdown
+		 * for the user, but luckily this takes place before they actually view it.
+		 */
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "getVideoUri", new XC_MethodHook() {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				String videoUri = (String) param.getResult();
@@ -125,20 +144,35 @@ public class Keepchat implements IXposedHookLoadPackage {
 				}
 			}
 		});
-		//display a toast so the user knows that the video was saved.
+		/*
+		 * showVideo() hook
+		 * Because getVideoUri() does not handily provide a context,
+		 * nor does its parent class (ReceivedSnap), we are unable to
+		 * get the context necessary in order to display a notification.
+		 * We "solve" this by cheating.
+		 * This is an entirely separate hook that displays a Toast notification
+		 * upon showing a video.
+		 * It makes no checks whatsoever that the video saving was successful,
+		 * it is merely for the benefit of the user to know that our hooks
+		 * are working.
+		 */
 		findAndHookMethod("com.snapchat.android.FeedActivity", lpparam.classLoader, "showVideo", new XC_MethodHook() {
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				Context context = ((Activity) param.thisObject).getApplicationContext();
-				XposedBridge.log("Loaded context from application");
 				//construct a toast notification telling the user it was successful
 				CharSequence text = "Saved video snap to SD card.";
 				Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
-				XposedBridge.log("Successfully constructed Toast notification.");
 				//display the toast for the user
 				toast.show();
+				XposedBridge.log("Video Toast displayed successfully.");
 			}
 		});
-		//never report screenshotted-ness (I don't know why you would want this but I put it in anyway.)
+		/*
+		 * wasScreenshotted() hook
+		 * This is more of an experiment.
+		 * I don't see why anyone using my framework would screenshot a snap,
+		 * but if they did it would not be reported.
+		 */
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "wasScreenshotted", new XC_MethodReplacement() {
 
 			@Override
