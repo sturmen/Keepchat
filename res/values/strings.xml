@@ -2,21 +2,6 @@
 <resources>
 
     <string name="app_name">Keepchat</string>
-    <string name="title_activity_main">Keepchat</string>
-    <string name="title_section1">Welcome</string>
-    <string name="title_section2">Credits</string>
-    <string name="toast_on">Toast notifications are enabled.</string>
-    <string name="toast_off">Toast notifications are disabled.</string>
-    <string name="toast_title">\"Save Successful\" Notifications</string>
-    <string name="videos_on">Videos will be saved.</string>
-    <string name="videos_off">Videos will not be saved.</string>
-    <string name="videos_title">Save Video Snaps</string>
-    <string name="sceenshotted_on">All snaps will be marked screenshotted.</string>
-    <string name="screenshotted_off">All snaps will be marked not screenshotted.</string>
-    <string name="screenshotted_title">Report As Screenshotted</string>
-    <string name="welcome_text">Hello, welcome to Keepchat!\n\nUsage is easy! Make sure you have the Xposed Framework installed, then ust enable Keepchat in the Xposed Installer, reboot your phone, and then use Snapchat normally.\n\nAll Snaps you receive (both photos and video!) will be saved to your SD card under the \"/keepchat\" directory.\n\nThis is the free version, so senders will be told that you "screenshotted" their Snaps.\n\nYou can disable this by purchasing the full version on the Play Store.\n</string>
-    <string name="buy_button">Buy Full Version</string>
-    <string name="xposed_button">Get Xposed</string>
     <string name="credits">Coded by <a href="mailto:sturmen@outlook.com">sturmen</a>.\nMakes use of the <a href="http://forum.xda-developers.com/showthread.php?t=1574401">Xposed Framework</a> by rovo89</string>
 
 </resources>
