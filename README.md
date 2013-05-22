@@ -20,4 +20,4 @@ Installation
 5. Use Snapchat as normal
 6. Find your saved Snaps in /sdcard/keepchat/
 
-IMPORTANT NOTE: While Keepchat is enabled, all Snaps you view will be marked as SCREENSHOTTED! I figured it was only fair to the people sending you Snaps. If you want to compile your own without this "feature," it's a one-line change in the source.
+### IMPORTANT NOTE: While Keepchat is enabled, all Snaps you view will be marked as SCREENSHOTTED! I figured it was only fair to the people sending you Snaps. If you want to compile your own without this "feature," it's a one-line change in the source.
