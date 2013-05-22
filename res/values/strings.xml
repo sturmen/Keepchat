@@ -13,5 +13,8 @@
     <string name="videos_on">Videos will be saved.</string>
     <string name="videos_off">Videos will not be saved.</string>
     <string name="videos_title">Save Video Snaps</string>
+    <string name="sceenshotted_on">All snaps will be marked screenshotted.</string>
+    <string name="screenshotted_off">All snaps will be marked not screenshotted.</string>
+    <string name="screenshotted_title">Report As Screenshotted</string>
 
 </resources>

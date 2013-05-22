@@ -13,5 +13,11 @@
         android:summaryOff="@string/videos_off"
         android:summaryOn="@string/videos_on"
         android:title="@string/videos_title" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="screenshotted_pref"
+        android:summaryOff="@string/screenshotted_off"
+        android:summaryOn="@string/sceenshotted_on"
+        android:title="@string/screenshotted_title" />
 
 </PreferenceScreen>
