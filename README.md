@@ -3,16 +3,16 @@ Keepchat
 
 A mod for Snapchat for Android, built using the Xposed Framework
 
-KEEPCHATa mod for Snapchat
+Features
+--------
+- Hooks into the Snapchat application; just install and go
+- Saves both images and videos
+- Toast popups to notify you of success
+- Open Source
+- Free!
 
-[Features]
--Hooks into the Snapchat application; just install and go
--Saves both images and videos
--Toast popups to notify you of success
--Open Source
--Free!
-
-[Installation]
+Installation
+------------
 1. Install Xposed Framework
 2. Install Keepchat
 3. Enable Keepchat in Xposed
