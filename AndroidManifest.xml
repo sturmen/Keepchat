@@ -11,8 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
@@ -23,15 +22,6 @@
             android:name="xposeddescription"
             android:value="Save your Snaps from Snapchat." />
 
-        <activity
-            android:name="com.sturmen.xposed.keepchat.MainActivity"
-            android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
