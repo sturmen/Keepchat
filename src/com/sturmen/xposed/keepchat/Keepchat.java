@@ -178,8 +178,8 @@ public class Keepchat implements IXposedHookLoadPackage {
 			@Override
 			protected Object replaceHookedMethod(MethodHookParam param)
 					throws Throwable {
-				XposedBridge.log("Reporting screenshotted.");
-				return true;
+				XposedBridge.log("Reporting not screenshotted.");
+				return false;
 			}
 		});
 	}
