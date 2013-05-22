@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -47,12 +46,6 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -66,18 +59,15 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			if (position == 0) {
-				return new TextSectionFragment();
-			} else {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
+			Fragment fragment = new TextSectionFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			if (position == 0) {
+				args.putInt(TextSectionFragment.ARG_LAYOUT_INT, R.layout.welcome);
+			} else {
+				args.putInt(TextSectionFragment.ARG_LAYOUT_INT, R.layout.credits);
+			}
 			fragment.setArguments(args);
 			return fragment;
-			}
 		}
 
 		@Override
@@ -100,13 +90,15 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public static class TextSectionFragment extends Fragment {
-		public TextSectionFragment() {
-		}
+		public static final String ARG_LAYOUT_INT = "layout_int";
+		
+		public TextSectionFragment() {}
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			// Inflate the layout for this fragment
-			return inflater.inflate(R.layout.welcome, container, false);
+			return inflater.inflate(getArguments().getInt(ARG_LAYOUT_INT), container, false);
 		}
 	}
 
