@@ -14,8 +14,9 @@
     <string name="sceenshotted_on">All snaps will be marked screenshotted.</string>
     <string name="screenshotted_off">All snaps will be marked not screenshotted.</string>
     <string name="screenshotted_title">Report As Screenshotted</string>
-    <string name="welcome_text">Hello, welcome to Keepchat!\n\nUsage is easy! Just enable Keepchat in the Xposed Installer, reboot your phone, and then use Snapchat normally.\n\nAll Snaps you receive (both photos and video!) will be saved to your SD card under the \"/keepchat\" directory.\n\nThis is the free version, so senders will be notified that you "screenshotted" their Snaps.\n\nYou can disable this by purchasing the full version on the Play Store.\n</string>
-    <string name="button">Buy Full Version</string>
+    <string name="welcome_text">Hello, welcome to Keepchat!\n\nUsage is easy! Make sure you have the Xposed Framework installed, then ust enable Keepchat in the Xposed Installer, reboot your phone, and then use Snapchat normally.\n\nAll Snaps you receive (both photos and video!) will be saved to your SD card under the \"/keepchat\" directory.\n\nThis is the free version, so senders will be told that you "screenshotted" their Snaps.\n\nYou can disable this by purchasing the full version on the Play Store.\n</string>
+    <string name="buy_button">Buy Full Version</string>
+    <string name="xposed_button">Get Xposed</string>
     <string name="credits">Coded by <a href="mailto:sturmen@outlook.com">sturmen</a>.\nMakes use of the <a href="http://forum.xda-developers.com/showthread.php?t=1574401">Xposed Framework</a> by rovo89</string>
 
 </resources>
