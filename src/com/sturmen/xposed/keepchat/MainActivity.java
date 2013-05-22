@@ -58,6 +58,9 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
+			if (position == 0) {
+				return new TextSectionFragment();
+			} else {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
@@ -66,12 +69,13 @@ public class MainActivity extends FragmentActivity {
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
+			}
 		}
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			// Show 2 total pages.
+			return 2;
 		}
 
 		@Override
@@ -82,10 +86,19 @@ public class MainActivity extends FragmentActivity {
 				return getString(R.string.title_section1).toUpperCase(l);
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
+		}
+	}
+
+	public static class TextSectionFragment extends Fragment {
+		public TextSectionFragment() {
+		}
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			// Inflate the layout for this fragment
+			return inflater.inflate(R.layout.welcome, container, false);
 		}
 	}
 

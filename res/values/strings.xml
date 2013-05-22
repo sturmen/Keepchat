@@ -5,7 +5,6 @@
     <string name="title_activity_main">Keepchat</string>
     <string name="title_section1">Welcome</string>
     <string name="title_section2">Settings</string>
-    <string name="title_section3">About</string>
     <string name="toast_on">Toast notifications are enabled.</string>
     <string name="toast_off">Toast notifications are disabled.</string>
     <string name="toast_title">\"Save Successful\" Notifications</string>
@@ -15,5 +14,6 @@
     <string name="sceenshotted_on">All snaps will be marked screenshotted.</string>
     <string name="screenshotted_off">All snaps will be marked not screenshotted.</string>
     <string name="screenshotted_title">Report As Screenshotted</string>
+    <string name="welcome_text">Hello, welcome to Keepchat!\nSwipe over to access the settings.</string>
 
 </resources>
