@@ -3,7 +3,6 @@
 
     <string name="app_name">Keepchat</string>
     <string name="title_activity_main">Keepchat</string>
-    <string name="action_settings">Settings</string>
     <string name="title_section1">Welcome</string>
     <string name="title_section2">Settings</string>
     <string name="title_section3">About</string>
