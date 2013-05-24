@@ -169,9 +169,9 @@ public class Keepchat implements IXposedHookLoadPackage {
 		});
 		/*
 		 * wasScreenshotted() hook
-		 * This is more of an experiment.
-		 * I don't see why anyone using my framework would screenshot a snap,
-		 * but if they did it would not be reported.
+		 * This is method is called to see if the Snap was screenshotted.
+		 * We hook it to always return true, meaning that it was screenshotted.
+		 * "False" would mean that it would always report that it was not screenshotted.
 		 */
 		findAndHookMethod("com.snapchat.android.model.ReceivedSnap", lpparam.classLoader, "wasScreenshotted", new XC_MethodReplacement() {
 
@@ -179,6 +179,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 			protected Object replaceHookedMethod(MethodHookParam param)
 					throws Throwable {
 				XposedBridge.log("Reporting screenshotted.");
+				// the line
 				return true;
 			}
 		});
