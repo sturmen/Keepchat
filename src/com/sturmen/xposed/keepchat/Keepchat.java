@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -46,7 +50,9 @@ public class Keepchat implements IXposedHookLoadPackage {
 				//if /keepchat doesn't exist, make it.
 				if (myDir.mkdirs())
 					XposedBridge.log("Directory " + myDir.toString() + " was created.");
-				String fname = "Image-"+ (System.currentTimeMillis() % 10000) + ".jpg";
+                //construct the filename. let it contain the current date and time, lexicographically
+                SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+				String fname = "Image_"+ (fnameDateFormat.format(new Date())) + ".jpg";
 				XposedBridge.log("Saving with filename " + fname);
 				//construct a File object
 				File file = new File (myDir, fname);
@@ -107,8 +113,9 @@ public class Keepchat implements IXposedHookLoadPackage {
 				//we make the directory if it doesn't exist.
 				if (myDir.mkdirs())
 					XposedBridge.log("Directory " + myDir.toString() + " was created.");
-				//construct the name for the new video. Uses timestamp so name will be unique
-				String fname = "Video-"+ (System.currentTimeMillis() % 10000) + ".mp4";
+                //construct the filename. let it contain the current date and time, lexicographically
+                SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+                String fname = "Video_"+ (fnameDateFormat.format(new Date())) + ".mp4";
 				XposedBridge.log("Saving with filename " + fname);
 				//construct a File object
 				File file = new File (myDir, fname);
