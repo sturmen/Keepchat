@@ -1,6 +1,7 @@
 package com.sturmen.xposed.keepchat;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,24 +43,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				Bitmap myImage = (Bitmap) param.getResult();
 				XposedBridge.log("Bitmap loaded.");
-				//we find the root of where we can write to
-				String root = Environment.getExternalStorageDirectory().toString();
-				//we then go into our directory
-				File myDir = new File(root + "/keepchat");
-				XposedBridge.log("Saving to directory " + myDir.toString());
-				//if /keepchat doesn't exist, make it.
-				if (myDir.mkdirs())
-					XposedBridge.log("Directory " + myDir.toString() + " was created.");
-                //construct the filename. let it contain the current date and time, lexicographically
-                SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
-				String fname = "Image_"+ (fnameDateFormat.format(new Date())) + ".jpg";
-				XposedBridge.log("Saving with filename " + fname);
-				//construct a File object
-				File file = new File (myDir, fname);
-				//make sure it doesn't exist (should never execute due to timestamp in name)
-				if (file.exists ())
-					if (file.delete())
-						XposedBridge.log("File " + fname + " overwritten.");
+				File file = constructFileObject(param.thisObject, "jpg");
 				try {
 					//open a new outputstream for writing
 					FileOutputStream out = new FileOutputStream(file);
@@ -70,7 +54,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 					//close it
 					out.close();
 					//construct a log entry
-					CharSequence text = "Saved to " + myDir.toString() + "/" +  fname + "!";
+					CharSequence text = "Saved to " + file.getCanonicalPath() + "!";
 					XposedBridge.log(text.toString());
 					//get the original context to use for the toast
 					Context context = (Context) param.args[0];
@@ -105,24 +89,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				String videoUri = (String) param.getResult();
 				XposedBridge.log("Video is at " + videoUri);
-				//we construct a path for us to write to
-				String root = Environment.getExternalStorageDirectory().toString();
-				//and add our own directory
-				File myDir = new File(root + "/keepchat");
-				XposedBridge.log("Saving to directory " + myDir.toString());
-				//we make the directory if it doesn't exist.
-				if (myDir.mkdirs())
-					XposedBridge.log("Directory " + myDir.toString() + " was created.");
-                //construct the filename. let it contain the current date and time, lexicographically
-                SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
-                String fname = "Video_"+ (fnameDateFormat.format(new Date())) + ".mp4";
-				XposedBridge.log("Saving with filename " + fname);
-				//construct a File object
-				File file = new File (myDir, fname);
-				//make sure it doesn't exist (should never execute due to timestamp in name)
-				if (file.exists ())
-					if (file.delete())
-						XposedBridge.log("File " + fname + " overwritten.");
+				File file = constructFileObject(param.thisObject, "mp4");
 				try {
 					//make a new input stream from the video URI
 					FileInputStream in = new FileInputStream (new File(videoUri));
@@ -142,7 +109,7 @@ public class Keepchat implements IXposedHookLoadPackage {
 					//and then close it
 					out.close();
 					//construct a log message
-					CharSequence text = "Saved to " + myDir.toString() + "/" +  fname + " !";
+					CharSequence text = "Saved to " + file.getCanonicalPath() + " !";
 					XposedBridge.log(text.toString());
 				} catch (Exception e) {
 					//if any exceptions are found, write to log
@@ -191,5 +158,46 @@ public class Keepchat implements IXposedHookLoadPackage {
 			}
 		});
 	}
+    /*
+     * constructFileObject(Object snapObject, String suffix) private method
+     * Return a File object to safe the image/video.
+     * The filename will be in the format <sender>_yyyy-MM-dd_HH-mm-ss.<suffix>
+     * and it resides in the keepchat/ subfolder on the SD card.
+     * As the construction of the file(name) got more fancy, it is handled in this separate method.
+     *
+     * The first parameter is the 'this' reference, which should be an instance of ReceivedSnap.
+     * It is necessary because we want to extract the sender's name from it. It should be passed
+     * to the method via 'param.thisObject' inside a hooked method.
+     *
+     * The second parameter is simply the suffix, either "jpg" or "mp4".
+     *
+     * Along the way, it creates the keepchat/ subfolder, if not existent and reports to the
+     * Xposed log if the file will be overwritten, which shall actually not happen anymore with the
+     * new naming scheme.
+     */
+    private File constructFileObject(Object snapObject, String suffix) {
+        //we construct a path for us to write to
+        String root = Environment.getExternalStorageDirectory().toString();
+        //and add our own directory
+        File myDir = new File(root + "/keepchat");
+        XposedBridge.log("Saving to directory " + myDir.toString());
+        //we make the directory if it doesn't exist.
+        if (myDir.mkdirs())
+            XposedBridge.log("Directory " + myDir.toString() + " was created.");
+        //construct the filename. It shall start with the sender's name...
+        String sender = (String) callMethod(snapObject, "getSender");
+        //...continue with the current date and time, lexicographically...
+        SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+        //...and end in the suffix provided ("jpg" or "mp4")
+        String fname = sender + "_" + (fnameDateFormat.format(new Date())) + "." + suffix;
+        XposedBridge.log("Saving with filename " + fname);
+        //construct a File object
+        File file = new File (myDir, fname);
+        //make sure it doesn't exist (should never execute due to timestamp in name)
+        if (file.exists ())
+            if (file.delete())
+                XposedBridge.log("File " + fname + " will be overwritten.");
+        return file;
+    }
 
 }
