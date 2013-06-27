@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -175,7 +176,7 @@ public class Keepchat implements IXposedHookLoadPackage {
      * Xposed log if the file will be overwritten, which shall actually not happen anymore with the
      * new naming scheme.
      */
-    private File constructFileObject(Object snapObject, String suffix) {
+    private File constructFileObject(Object snapObject, String suffix) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         //we construct a path for us to write to
         String root = Environment.getExternalStorageDirectory().toString();
         //and add our own directory
@@ -188,8 +189,11 @@ public class Keepchat implements IXposedHookLoadPackage {
         String sender = (String) callMethod(snapObject, "getSender");
         //...continue with the current date and time, lexicographically...
         SimpleDateFormat fnameDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+          // ReceivedSnap extends the Snap class. getTimestamp() is a member of the Snap class,
+          // so we cannot access it via XposedHelpers.callMethod() and have to use our own reflection for that
+        Date timestamp = new Date((Long) callSuperMethod(snapObject, "getTimestamp"));
         //...and end in the suffix provided ("jpg" or "mp4")
-        String fname = sender + "_" + (fnameDateFormat.format(new Date())) + "." + suffix;
+        String fname = sender + "_" + (fnameDateFormat.format(timestamp)) + "." + suffix;
         XposedBridge.log("Saving with filename " + fname);
         //construct a File object
         File file = new File (myDir, fname);
@@ -198,6 +202,17 @@ public class Keepchat implements IXposedHookLoadPackage {
             if (file.delete())
                 XposedBridge.log("File " + fname + " will be overwritten.");
         return file;
+    }
+    /*
+     * callSuperMethod()
+     *
+     * XposedHelpers.callMethod() cannot call methods of the super class of an object, because it
+     * uses getDeclaredMethods(). So we have to implement this little helper, which should work
+     * similar to callMethod(). Furthermore, the exceptions from getMethod() are passed on.
+     * See http://forum.xda-developers.com/showpost.php?p=42598280&postcount=1753
+     */
+    private Object callSuperMethod(Object obj, String methodName, Object... objects) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return obj.getClass().getMethod(methodName).invoke(obj, objects);
     }
 
 }
