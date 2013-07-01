@@ -1,3 +1,5 @@
+This version is no longer being maintained. See https://github.com/sebastianst/Keepchat for further development.
+
 Keepchat
 ========
 
